@@ -6,9 +6,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@supabase/ssr": "latest",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
+    "@mui/material-nextjs": "^5.15.11",
+    "@mui/x-date-pickers": "^7.0.0",
+    "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
+    "date-fns": "^3.6.0",
     "geist": "^1.2.1",
     "next": "latest",
     "postcss": "8.4.33",
