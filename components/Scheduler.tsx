@@ -13,6 +13,8 @@ import { jaJP } from '@mui/x-date-pickers/locales';
 interface SchedulerProps {
   startHour: number;
   endHour: number;
+  selectedShop: number | null;
+  reservations: { day: number; hour: number; count: number }[];
 }
 
 const mockReservations = [
@@ -23,7 +25,7 @@ const mockReservations = [
 
   const CELL_HEIGHT = 60; 
 
-const Scheduler: React.FC<SchedulerProps> = ({ startHour, endHour }) => {
+const Scheduler: React.FC<SchedulerProps> = ({ startHour, endHour, selectedShop, reservations  }) => {
   const [selectedCell, setSelectedCell] = useState<{ day: number; hour: number } | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(setMinutes(setHours(new Date(), startHour), 0));
 
@@ -50,31 +52,31 @@ const Scheduler: React.FC<SchedulerProps> = ({ startHour, endHour }) => {
     const dayCells = [];
     for (let hour = startHour; hour < endHour; hour++) {
       const isSelected = selectedCell?.day === day && selectedCell?.hour === hour;
-      const reservation = mockReservations.find((res) => res.day === day && res.hour === hour);
+      const reservation = reservations.find((res) => res.day === day && res.hour === hour);
       const count = reservation ? reservation.count : 0;
 
       dayCells.push(
-        <Grid item key={`${day}-${hour}`} sx={{ position: 'relative', borderBottom: '1px solid', borderColor: 'divider',height:CELL_HEIGHT }}>
-        <Box
-          onClick={() => handleCellClick(day, hour, count)}
-          sx={{
-            height: '100%',
-            backgroundColor: count === 0 ? 'grey.200' : isSelected ? 'primary.main' : 'grey.100',
-            cursor: count === 0 ? 'default' : 'pointer',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="body2" color={count === 0 ? 'text.disabled' : 'text.primary'}>
-            {`予約: ${count}`}
-          </Typography>
-        </Box>
-      </Grid>
+        <Grid item key={`${day}-${hour}`} sx={{ position: 'relative', borderBottom: '1px solid', borderColor: 'divider', height: CELL_HEIGHT }}>
+          <Box
+            onClick={() => handleCellClick(day, hour, count)}
+            sx={{
+              height: '100%',
+              backgroundColor: count === 0 ? 'grey.200' : isSelected ? 'primary.main' : 'grey.100',
+              cursor: count === 0 ? 'default' : 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="body2" color={count === 0 ? 'text.disabled' : 'text.primary'}>
+              {`残り: ${count}`}
+            </Typography>
+          </Box>
+        </Grid>
       );
     }
     return dayCells;
-  };
+    };
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
